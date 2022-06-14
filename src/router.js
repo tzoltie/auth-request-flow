@@ -18,7 +18,8 @@ router.post('/login', (req, res) => {
 });
 
 router.get('/profile', (req, res) => {
-
+  
 });
+
 
 module.exports = router;
