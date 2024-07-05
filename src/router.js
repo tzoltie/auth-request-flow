@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_SECRET
 
 const router = express.Router();
 
@@ -14,11 +15,28 @@ const mockUser = {
 };
 
 router.post('/login', (req, res) => {
+    const { username } = req.body
+    const payload = {username}
+    
+    const token = jwt.sign(payload, secret)
 
+    res.status(200).json({
+        login: token
+    })
 });
 
 router.get('/profile', (req, res) => {
-  
+    const { authorization } = req.headers
+
+    if(!authorization) {
+        return res.status(403).json({
+            error: 'No credentials sent'
+        })
+    }
+    const decoded = jwt.verify(authorization, secret)
+    const profile = mockUser.profile
+    
+    return profile
 });
 
 
