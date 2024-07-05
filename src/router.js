@@ -15,14 +15,22 @@ const mockUser = {
 };
 
 router.post('/login', (req, res) => {
-    const { username } = req.body
+    const { username, password } = req.body
     const payload = {username}
-    
-    const token = jwt.sign(payload, secret)
 
-    res.status(200).json({
+    if( username === mockUser.username &&
+        password === mockUser.password
+    ) {
+        const token = jwt.sign(payload, secret)
+
+        res.status(200).json({
         login: token
-    })
+        })
+    } else {
+        res.status(403).json({
+            error: 'Credentials do not match'
+        })
+    }
 });
 
 router.get('/profile', (req, res) => {
@@ -35,7 +43,7 @@ router.get('/profile', (req, res) => {
     }
     const decoded = jwt.verify(authorization, secret)
     const profile = mockUser.profile
-    
+
     return profile
 });
 
