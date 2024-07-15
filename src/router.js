@@ -44,7 +44,9 @@ router.get('/profile', (req, res) => {
     const decoded = jwt.verify(authorization, secret)
     const profile = mockUser.profile
 
-    return profile
+    res.status(200).json({
+        user: profile
+    })
 });
 
 
